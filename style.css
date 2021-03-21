@@ -18,7 +18,7 @@
     animation: block 2s infinite linear;
 }
 @keyframes block{
-    0%{left:400px}
+    0%{left:100%}
     100%{left:-50px}
 }
 #hole{
