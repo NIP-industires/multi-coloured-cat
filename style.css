@@ -29,6 +29,7 @@
     position: relative;
     left: 400px;
     top: -500px;
+    margin:5%;
     animation: block 2s infinite linear;
 }
 #character{
