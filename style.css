@@ -15,7 +15,7 @@
     background-color: black;
     position: relative;
     left: 400px;
-    animation: block 2s infinite linear;
+    animation: block 0.5s infinite linear;
 }
 @keyframes block{
     0%{left:100%}
@@ -28,7 +28,7 @@
     position: relative;
     left: 400px;
     top: -500px;
-    animation: block 2s infinite linear;
+    animation: block 0.5s infinite linear;
 }
 #character{
     width: 20px;
