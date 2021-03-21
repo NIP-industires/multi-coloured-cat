@@ -12,10 +12,9 @@
 #block{
     width: 50px;
     height: 500px;
-    margin: 5%;
     background-color: black;
     position: relative;
-    left: 400px;
+    left: -100%;
     animation: block 2s infinite linear;
 }
 @keyframes block{
@@ -29,7 +28,6 @@
     position: relative;
     left: 400px;
     top: -500px;
-    margin:5%;
     animation: block 2s infinite linear;
 }
 #character{
@@ -38,6 +36,6 @@
     background-color: red;
     position: absolute;
     top: 100px;
-    margin: 5%;
+    margin: 50%;
     border-radius: 50%;
 }
