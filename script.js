@@ -4,6 +4,33 @@ var character = document.getElementById("character");
 var jumping = 0;
 var counter = 0;
 
+
+//changes from lines 9 - 30 by Kayla
+//inserting cat image
+var char_img = new Image(); 
+var div = document.getElementById('character'); 
+ 
+char_img.onload = function() { 
+ 
+  div.innerHTML += '<img src="'+char_img.src+'" />';  
+ 
+}; 
+char_img.src = "/Sprites/kitty.png";
+
+// //inserting pipes. much confusion with making this one work
+// var pipes_img = new pipe_Image(); 
+// var div = document.getElementById('block'); 
+ 
+// pipes_img.onload = function() { 
+ 
+//   div.innerHTML += '<img src="'+pipes_img.src+'" />';  
+ 
+// };  
+// pipes_img.src = "/Sprites/Pipes.png";
+// //
+
+
+
 hole.addEventListener('animationiteration', () => {
     var random = -((Math.random()*300)+150);
     hole.style.top = random + "px";
