@@ -1,81 +1,187 @@
-var block = document.getElementById("block");
-var hole = document.getElementById("hole");
-var character = document.getElementById("character");
-var jumping = 0;
-var counter = 0;
+window.addEventListener('DOMContentLoaded', (event) => {  
+	var startOver = document.getElementById("retry-button");
+	var start = document.getElementById("start-button");
+  var twr = document.getElementById("share");
 
-
-//changes from lines 9 - 30 by Kayla
-//inserting cat image
-var char_img = new Image(); 
-var div = document.getElementById('character'); 
- 
-char_img.onload = function() { 
- 
-  div.innerHTML += '<img src="'+char_img.src+'" />';  
- 
-}; 
-char_img.src = "/Sprites/kitty.png";
-
-// //inserting pipes. much confusion with making this one work
-// var pipes_img = new pipe_Image(); 
-// var div = document.getElementById('block'); 
- 
-// pipes_img.onload = function() { 
- 
-//   div.innerHTML += '<img src="'+pipes_img.src+'" />';  
- 
-// };  
-// pipes_img.src = "/Sprites/Pipes.png";
-// //
-
-
-
-hole.addEventListener('animationiteration', () => {
-    var random = -((Math.random()*300)+150);
-    hole.style.top = random + "px";
-    counter++;
+	startOver.style.display = "none";
+	start.style.display = "inline-block";
+	twr.style.zIndex = -10;
 });
-setInterval(function(){
-    var characterTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
-    if(jumping==0){
-        character.style.top = (characterTop+2.5)+"px";
-    }
-    var blockLeft = parseInt(window.getComputedStyle(block).getPropertyValue("left"));
-    var holeTop = parseInt(window.getComputedStyle(hole).getPropertyValue("top"));
-    var cTop = -(500-characterTop);
-    if((characterTop>480)||((blockLeft<20)&&(blockLeft>-50)&&((cTop<holeTop)||(cTop>holeTop+130)))){
-        alert("Game over. Score: "+(counter-1));
-        character.style.top = 100 + "px";
-        counter=0;
-        
-    }
-        let speedup=1;
-        var totalspeed;
-        if(counter%5==0){
-            block.animation.time= block.animation.time-0.1;
-            totalspeed++;
-        }
-        
-        if(totalspeed>10){
-             block.animation.time=0.7;
-        }
-},10);
 
-function jump(){
-    jumping = 1;
-    let jumpCount = 0;
-    var jumpInterval = setInterval(function(){
-        var characterTop = parseInt(window.getComputedStyle(character).getPropertyValue("top"));
-        if((characterTop>6)&&(jumpCount<15)){
-            character.style.top = (characterTop-3)+"px";
-        }
-        if(jumpCount>20){
-            clearInterval(jumpInterval);
-            jumping=0;
-            jumpCount=0;
-        }
-        jumpCount++;
-    },10);
+function displayButtons() {
+	var startOver = document.getElementById("retry-button");
+	var start = document.getElementById("start-button");
+  var twr = document.getElementById("share");
 
+  if (startOver.style.display === "none")
+	{
+		startOver.style.display = "block";
+		start.style.display = "none";
+    twr.style.zIndex = 10;
+	}
+  else 
+	{
+		startOver.style.display = "none";
+		start.style.display = "inline-block";
+    twr.style.zIndex = -10;
+	}
 }
+
+//hold the whole game in this one function
+function theGame(){
+	var startOver = document.getElementById("retry-button");
+	startOver.style.display = "none";
+
+  var twr = document.getElementById("share");
+	twr.style.zIndex = -10;
+
+  const cat = document.querySelector('.cat')
+  const gameScreen = document.querySelector('.game')
+
+  /* moves the bird to the centre */
+
+  let catLeft = 20;
+  let catBottom = 50;
+  let gravity = 1.25;
+  let gameDone = false;
+  let countPlease = false;
+  let counter=0;
+  let pipeTopStop,stopVal,pipeBottom,pipeMove;
+  let gap = 25;
+	let highScore = counter;
+	var savedScore=0;
+
+	document.getElementById("score").innerHTML = 0
+	
+  function startGame() {
+    catBottom -= gravity
+    cat.style.bottom = catBottom + '%'
+    cat.style.left = catLeft + '%'
+  }
+  // applies gravity to the cat by constantly lowering its position on the screen
+
+	var start = document.getElementById("start-button");
+	start.style.display = "none";
+
+  let gamertimerId = setInterval(startGame, 20)
+  // runs the gravity function every 20 miliseconds
+
+  function jump() {
+    if (catBottom < 80)
+      catBottom += 15
+    cat.style.bottom = jump + '%'
+  }
+  // function that makes the cat jump by 15 % of the page height when pressed
+
+  document.addEventListener('click', jump)
+  // when the user clicks the screen the jump function happens
+
+  function makePipe() {
+    let pipeLeft = 90;
+		pipeMove = pipeLeft;
+    let random = Math.random() * 20
+    pipeBottom = random
+
+    const pipe = document.createElement('div')
+		const topPipe = document.createElement('div')
+    
+    if (!gameDone) 
+		{
+			gameScreen.appendChild(pipe)
+			gameScreen.appendChild(topPipe)
+		}
+    pipe.classList.add('pipe')
+    topPipe.classList.add('topPipe')
+
+    pipe.style.left = pipeLeft + '%'
+		topPipe.style.left = pipeLeft + '%'
+    pipe.style.bottom = pipeBottom + '%'
+		topPipe.style.bottom = pipeBottom + gap + 50 + '%'
+
+    pipeTopStop = pipeBottom+20
+
+		let timerId = setInterval(move, 20)
+    // makes the pipe move and remove when at the edge of screen
+	  function move() {
+        pipeLeft -= 0.5
+        pipe.style.left = pipeLeft + '%'
+        topPipe.style.left = pipeLeft + '%'
+
+        if (pipeLeft === -50) 
+          clearInterval(timerId)  
+    }
+    
+
+		function moveTheLeft() {
+			 while (pipeMove > 1)
+					pipeMove -= 1
+		}
+    moveTheLeft()
+    stopVal = pipeTopStop
+
+    if (!gameDone) {
+      setTimeout(makePipe, 3700)
+      setTimeout(checkCatCollide, 3600)
+      if (countPlease)
+				counter++
+    }
+  }
+
+  if (!gameDone)
+    makePipe()
+  stopVal = pipeTopStop; //to collide next to the pipe
+
+  function checkCatCollide(){
+   // cat touches bottom, top pipe, bottom pipe
+    if ((catBottom <= stopVal-15  ) || (catBottom >= stopVal+15 && catLeft >=pipeMove) ||(catBottom < stopVal-5 && catLeft >=pipeMove))
+    {
+      countPlease = false;
+      gameOver()
+      clearInterval(timerId)
+    }
+    else
+		{
+			countPlease = true;
+			printResult()
+		}
+  }
+
+  function gameOver() {
+    clearInterval(gamertimerId)
+    // stop the gravity 
+		displayButtons()
+    // display the score 
+    
+		counter--
+		printResult()
+		counter++
+    gameDone = true
+    document.removeEventListener('click', jump)
+			if (counter>= highScore)
+		{
+			highScore = counter
+			printHighScore()
+		}
+  }
+
+	function printResult(){
+			var print = counter+1;
+			document.getElementById("score").innerHTML = print;
+	}
+
+	function printHighScore(){
+		savedScore = localStorage.getItem('highest');
+		if (savedScore >= highScore)
+		{
+			document.getElementById("hi-score").innerHTML = savedScore;
+		}
+		else
+		{
+			const print2 = highScore;
+			localStorage.setItem('highest', print2);
+			savedScore = localStorage.getItem('highest');
+			document.getElementById("hi-score").innerHTML = savedScore;
+		}
+	}
+}
+

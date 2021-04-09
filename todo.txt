@@ -1,0 +1,5 @@
+this for css bc i does get confused quick
+
+- fix viewport for mobile
+- edit share button css
+- center home screen
