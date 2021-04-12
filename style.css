@@ -15,7 +15,7 @@ body{
 	text-align: center;
 	font-size: 30px;
 	background-size: 100px;
-	background-color: #1c1616;
+	background-color: #241c1c;
 	color: white; 
 	touch-action: none;
 	font-family: 'silkscreen_expandednormal';
@@ -58,6 +58,8 @@ body{
   top: 0px;
 }
 
+
+
 #retry-button{
 	z-index: 10;
 	color:#be5e5e; 
@@ -69,11 +71,15 @@ body{
   left: 50vw;
 }
 
+#retry-button:hover{
+  background-color: rgba(256,256,256,.5);
+}
+
 #share{
 	box-sizing: content-box;
   border-style: solid;
-  border-color: gray;
-  background-color: #efefef; 
+  border-color: rgb(255, 255, 255);
+  background-color: #a8a8a8; 
   padding: 5px;
 	padding-bottom: 2px;
 	margin-left: 4px;
@@ -81,7 +87,7 @@ body{
   z-index: 10;
   position: absolute;
   top: 50vh;
-  left: 52vw;
+  left: 51vw;
 }
 
 #start-button{
@@ -94,8 +100,12 @@ body{
   text-decoration: none;
 }
 
+#start-button:hover{
+  background-color: rgba(256,256,256,.5);
+}
+
 .game{
-	 background-color: #1c1616;
+	 background-color: #241c1c;
     width: 100%;
     height: 600px;
     position: absolute; 
@@ -105,7 +115,7 @@ body{
 }
 
 .stars{
-    background-image: url('Sprites/Background_stars.png');
+    background-image: url('Sprites/Background_stars2.png');
     width: 100%;
     height: 70%;
     position: absolute;
@@ -166,10 +176,6 @@ div.cat{
   position: absolute;
   font-family: 'silkscreen_expandednormal';
 	font-size: 30px;
-}
-
-a:hover{
-	text-decoration: underline ;
 }
 
 .noSelect {

@@ -1,3 +1,5 @@
+//Loads all the buttons and sets the retry and hidden buttons 
+//to hidden at the start of the game
 window.addEventListener('DOMContentLoaded', (event) => {  
 	var startOver = document.getElementById("retry-button");
 	var start = document.getElementById("start-button");
@@ -8,6 +10,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 	twr.style.zIndex = -10;
 });
 
+//on game over the retry and share buttons are displayed
 function displayButtons() {
 	var startOver = document.getElementById("retry-button");
 	var start = document.getElementById("start-button");
@@ -27,7 +30,7 @@ function displayButtons() {
 	}
 }
 
-//hold the whole game in this one function
+//holds the whole game in this one function
 function theGame(){
 	var startOver = document.getElementById("retry-button");
 	startOver.style.display = "none";
@@ -39,7 +42,6 @@ function theGame(){
   const gameScreen = document.querySelector('.game')
 
   /* moves the bird to the centre */
-
   let catLeft = 20;
   let catBottom = 50;
   let gravity = 1.25;
@@ -51,31 +53,33 @@ function theGame(){
 	let highScore = counter;
 	var savedScore=0;
 
+	//sets score to 0 at the start
 	document.getElementById("score").innerHTML = 0
-	
+
+	// applies gravity to the cat by constantly lowering its position on the screen
   function startGame() {
     catBottom -= gravity
     cat.style.bottom = catBottom + '%'
     cat.style.left = catLeft + '%'
   }
-  // applies gravity to the cat by constantly lowering its position on the screen
-
+  
 	var start = document.getElementById("start-button");
 	start.style.display = "none";
 
+ // runs the gravity function every 20 miliseconds
   let gamertimerId = setInterval(startGame, 20)
-  // runs the gravity function every 20 miliseconds
-
+ 
+  // function that makes the cat jump by 15 % of the page height when pressed
   function jump() {
     if (catBottom < 80)
       catBottom += 15
     cat.style.bottom = jump + '%'
   }
-  // function that makes the cat jump by 15 % of the page height when pressed
 
+	// when the user clicks the screen the jump function happens
   document.addEventListener('click', jump)
-  // when the user clicks the screen the jump function happens
-
+  
+	//generates the top and bottom pipes
   function makePipe() {
     let pipeLeft = 90;
 		pipeMove = pipeLeft;
@@ -93,6 +97,7 @@ function theGame(){
     pipe.classList.add('pipe')
     topPipe.classList.add('topPipe')
 
+		//sets the pipe to appear at 90% of the vw
     pipe.style.left = pipeLeft + '%'
 		topPipe.style.left = pipeLeft + '%'
     pipe.style.bottom = pipeBottom + '%'
@@ -111,7 +116,7 @@ function theGame(){
           clearInterval(timerId)  
     }
     
-
+		// decrements the pipe's position so it can be tracked when the cat passes it 
 		function moveTheLeft() {
 			 while (pipeMove > 1)
 					pipeMove -= 1
@@ -119,6 +124,7 @@ function theGame(){
     moveTheLeft()
     stopVal = pipeTopStop
 
+		// if the game is not over then continue to make pipes and check if the cat hit an obstacle 
     if (!gameDone) {
       setTimeout(makePipe, 3700)
       setTimeout(checkCatCollide, 3600)
@@ -132,8 +138,8 @@ function theGame(){
   stopVal = pipeTopStop; //to collide next to the pipe
 
   function checkCatCollide(){
-   // cat touches bottom, top pipe, bottom pipe
-    if ((catBottom <= stopVal-15  ) || (catBottom >= stopVal+15 && catLeft >=pipeMove) ||(catBottom < stopVal-5 && catLeft >=pipeMove))
+   // cat touches pipeTop or pipeBottom
+    if ((catBottom >= stopVal+5 && catLeft >=pipeMove) || (catBottom < stopVal-10 && catLeft>=pipeMove))
     {
       countPlease = false;
       gameOver()
@@ -147,17 +153,20 @@ function theGame(){
   }
 
   function gameOver() {
-    clearInterval(gamertimerId)
-    // stop the gravity 
-		displayButtons()
+   // stop the gravity  
+	 	clearInterval(gamertimerId)
+
     // display the score 
+		displayButtons()
     
 		counter--
 		printResult()
 		counter++
     gameDone = true
+
+		//prevents the user from continuing to jump
     document.removeEventListener('click', jump)
-			if (counter>= highScore)
+		if (counter>= highScore)
 		{
 			highScore = counter
 			printHighScore()
@@ -172,9 +181,7 @@ function theGame(){
 	function printHighScore(){
 		savedScore = localStorage.getItem('highest');
 		if (savedScore >= highScore)
-		{
 			document.getElementById("hi-score").innerHTML = savedScore;
-		}
 		else
 		{
 			const print2 = highScore;
@@ -184,4 +191,3 @@ function theGame(){
 		}
 	}
 }
-
